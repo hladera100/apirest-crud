@@ -1,16 +1,15 @@
-{{define "editar"}}
+{{ define "editar"}}
 {{template "cabecera"}}
 
 
 <div class="card">
-    <div class="card-header">
-        Empleados
-    </div>
+    <div class="card-header">        Empleados    </div>
     <div class="card-body">
          <form method="post" action="/actualizar"> 
+
            <div class="form-group">
              <label class="sr-only" for="inputName">Clave de registro</label>
-             <input type="text" value={{.Id}} class="form-control" name="inputName" id="inputName" placeholder="">
+             <input type="text" value={{.ID}} class="form-control" name="id" id="id" placeholder="">
            </div>
 
             <div class="form-group">
@@ -20,7 +19,7 @@
               <small id="helpId" class="form-text text-muted">Escribe tu nombre...</small>
             </div>
             <div class="form-group">
-              <label for="">Email</label>
+              <label for="">Correo</label>
               <input type="email" class="form-control" value={{.Correo}} name="correo" id="correo" aria-describedby="emailHelpId" placeholder="">
               <small id="emailHelpId" class="form-text text-muted">Escribe tu correo...</small>
             </div>

@@ -32,6 +32,7 @@ func main() {
 	http.HandleFunc("/insertar", Insertar)
 	http.HandleFunc("/borrar", Borrar)
 	http.HandleFunc("/editar", Editar)
+	http.HandleFunc("/actualizar", Actualizar)
 
 	log.Println("Servidor corriendo...")
 	http.ListenAndServe(":2001", nil)
@@ -81,6 +82,7 @@ func Crear(w http.ResponseWriter, r *http.Request) {
 }
 
 func Insertar(w http.ResponseWriter, r *http.Request) {
+	log.Println("Funcion Insertar ")
 	if r.Method == "POST" {
 		nombre := r.FormValue("nombre")
 		correo := r.FormValue("correo")
@@ -95,6 +97,7 @@ func Insertar(w http.ResponseWriter, r *http.Request) {
 }
 
 func Borrar(w http.ResponseWriter, r *http.Request) {
+	log.Println("Funcion Borrar ")
 	id := r.URL.Query().Get("id")
 	conexionEstablecida := conexionDB()
 	borrarReg, err := conexionEstablecida.Prepare("DELETE FROM empleado WHERE ID =?")
@@ -129,4 +132,22 @@ func Editar(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(empleado)
 	plantillas.ExecuteTemplate(w, "editar", empleado)
+}
+
+func Actualizar(w http.ResponseWriter, r *http.Request) {
+	log.Println("Funcion Actualizar ")
+	id := r.FormValue("id")
+	nombre := r.FormValue("nombre")
+	correo := r.FormValue("correo")
+	log.Println("id: ", id)
+	log.Println("Nombre: ", nombre)
+	log.Println("correo: ", correo)
+
+	conexionEstablecida := conexionDB()
+	registro, err := conexionEstablecida.Prepare("UPDATE empleado SET nombre=?, correo= ? WHERE id= ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	registro.Exec(nombre, correo, id)
+	http.Redirect(w, r, "/", 301)
 }
